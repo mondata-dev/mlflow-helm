@@ -1,4 +1,4 @@
-image: alpine/helm:3.5.4
+image: dtzar/helm-kubectl:3.11.2
 
 stages:
   - build
