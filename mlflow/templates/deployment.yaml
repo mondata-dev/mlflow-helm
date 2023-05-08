@@ -1,5 +1,5 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   name: {{ include "mlflow.fullname" . }}
   labels:
@@ -45,7 +45,7 @@ spec:
           args:
             - >-
               pip install psycopg2-binary google-cloud-storage &&
-              mlflow server --host=0.0.0.0 --serve-artifacts
+              mlflow server --host=0.0.0.0
           volumeMounts:
             - name: artifact-credentials-volume
               mountPath: /etc/mlflow/artifact-credentials/credentials.json
