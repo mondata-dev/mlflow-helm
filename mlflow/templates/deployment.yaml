@@ -38,18 +38,22 @@ spec:
                 name: {{ include "mlflow.fullname" . }}
             - secretRef:
                 name: {{ include "mlflow.fullname" . }}
+          {{- if .Values.artifacts.credentials.google }}
           env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /etc/mlflow/artifact-credentials/credentials.json
+          {{- end }}
           command: ["/bin/sh", "-c"]
           args:
             - >-
               pip install psycopg2-binary google-cloud-storage &&
               mlflow server --host=0.0.0.0
+          {{- if .Values.artifacts.credentials.google }}
           volumeMounts:
             - name: artifact-credentials-volume
               mountPath: /etc/mlflow/artifact-credentials/credentials.json
               subPath: credentials.json
+          {{- end }}
           ports:
             - name: http
               containerPort: 5000
@@ -67,7 +71,7 @@ spec:
       volumes:
         - name: artifact-credentials-volume
           secret:
-            name: {{ include "mlflow.fullname" . }}-artifact-credentials
+            secretName: {{ include "mlflow.fullname" . }}-artifact-credentials
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

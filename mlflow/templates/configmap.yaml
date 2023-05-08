@@ -5,5 +5,5 @@ metadata:
   labels:
     {{- include "mlflow.labels" . | nindent 4 }}
 data:
-  MLFLOW_SERVE_ARTIFACTS: {{ .Values.artifacts.serve }}
-  MLFLOW_ARTIFACTS_DESTINATION: {{ .Values.artifacts.destination }}
+  MLFLOW_SERVE_ARTIFACTS: {{ .Values.artifacts.serve | quote }}
+  MLFLOW_ARTIFACTS_DESTINATION: {{ .Values.artifacts.destination | quote }}
