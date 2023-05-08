@@ -77,3 +77,13 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+backendStore:
+  uri: "postgresql://user:password@postgresql:5432/mlflow"
+
+artifacts:
+  serve: true
+  destination: "s3://mlflow/artifacts"
+
+  credentials:
+    google: null # contents of credentials.json for a service account with write access to the bucket
