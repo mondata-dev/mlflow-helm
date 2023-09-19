@@ -15,3 +15,14 @@ build:
         "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/stable/charts"
   only:
     - tags
+
+github:
+  stage: build
+  script:
+    - echo GITHUB_DEPLOY_PRIVATE_KEY
+    - cat $GITHUB_DEPLOY_PRIVATE_KEY | ssh-add
+    - mkdir -p ~/.ssh
+    - ls ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - git clone --depth 1 git@github.com:mondata-dev/helm-charts.git
+    - ls helm-charts
