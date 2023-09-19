@@ -28,7 +28,7 @@ build:
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - git clone --depth 1 git@github.com:mondata-dev/helm-charts.git
     - cd helm-charts/
-    - cp ../mlflow-${CI_COMMIT_TAG}.tgz" mlflow/
+    - cp "../mlflow-${CI_COMMIT_TAG}.tgz" mlflow/
     - helm repo index .
     - git add .
     - git commit -m "added mlflow release ${CI_COMMIT_TAG}"
