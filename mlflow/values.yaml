@@ -90,3 +90,10 @@ artifacts:
 
   credentials:
     google: null # contents of credentials.json for a service account with write access to the bucket
+    s3: null
+      # endpointUrl: null
+      # awsAccessKeyId: null
+      # awsSecretAccessKey: null
+
+  certificates:
+    awsCaBundle: null # contents of S3 custom certificate PEM to be referred to via env var AWS_CA_BUNDLE

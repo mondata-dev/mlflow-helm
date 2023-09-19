@@ -43,32 +43,30 @@ spec:
                 name: {{ include "mlflow.fullname" . }}
             - secretRef:
                 name: {{ include "mlflow.fullname" . }}
-          {{- if .Values.artifacts.credentials.google }}
           env:
+            {{- if .Values.artifacts.credentials.google }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /etc/mlflow/artifact-credentials/credentials.json
-          {{- end }}
-          {{- if .Values.artifacts.certificates.s3 }}
-          env:
+            {{- end }}
+            {{- if .Values.artifacts.certificates.awsCaBundle }}
             - name: AWS_CA_BUNDLE
               value: /etc/ssl/certs/custom_certificate.cert.pem
-          {{- end }}
+            {{- end }}
           command: ["/bin/sh", "-c"]
           args:
             - >-
               mlflow server --host=0.0.0.0
-          {{- if .Values.artifacts.credentials.google }}
           volumeMounts:
+            {{- if .Values.artifacts.credentials.google }}
             - name: artifact-credentials-volume
               mountPath: /etc/mlflow/artifact-credentials/credentials.json
               subPath: credentials.json
-          {{- end }}
-          {{- if .Values.artifacts.certificates.s3 }}
-          volumeMounts:
+            {{- end }}
+            {{- if .Values.artifacts.certificates.awsCaBundle }}
             - name: artifact-certificates-volume
               mountPath: /etc/ssl/certs/custom_certificate.cert.pem
               subPath: custom_certificate.cert.pem
-          {{- end }}
+            {{- end }}
           ports:
             - name: http
               containerPort: 5000
