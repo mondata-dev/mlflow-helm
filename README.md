@@ -1,3 +1,5 @@
+# MLflow Helm Chart
+
 ## Release new helm chart version
 
 The simplest way is to tag the repo with the appropriate version tag and let gitlab's CI do the rest.
