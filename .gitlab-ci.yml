@@ -30,6 +30,8 @@ build:
     - cd helm-charts/
     - cp "../mlflow-${CI_COMMIT_TAG}.tgz" mlflow/
     - helm repo index .
+    - git config --global user.email "dev@mondata.de"
+    - git config --global user.name "Mondata Gitlab Runner"
     - git add .
     - git commit -m "added mlflow release ${CI_COMMIT_TAG}"
     - git push
