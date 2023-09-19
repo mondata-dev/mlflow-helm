@@ -23,7 +23,8 @@ github:
     - apt-get update -y && apt-get install -y openssh-client git
     - eval $(ssh-agent -s)
     - echo $GITHUB_DEPLOY_PRIVATE_KEY
-    - cat $GITHUB_DEPLOY_PRIVATE_KEY | ssh-add
+    - chmod 600 $GITHUB_DEPLOY_PRIVATE_KEY
+    - ssh-add $GITHUB_DEPLOY_PRIVATE_KEY
     - mkdir -p ~/.ssh
     - ls ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
