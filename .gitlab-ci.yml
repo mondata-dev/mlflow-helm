@@ -17,9 +17,12 @@ build:
     - tags
 
 github:
+  image: ubuntu:22.04
   stage: build
   script:
-    - echo GITHUB_DEPLOY_PRIVATE_KEY
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - echo $GITHUB_DEPLOY_PRIVATE_KEY
     - cat $GITHUB_DEPLOY_PRIVATE_KEY | ssh-add
     - mkdir -p ~/.ssh
     - ls ~/.ssh
