@@ -1,4 +1,4 @@
-image: dtzar/helm-kubectl:3.11.2
+image: ubuntu:22.04
 
 stages:
   - build
@@ -6,12 +6,31 @@ stages:
 build:
   stage: build
   script:
+    - curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+    - sudo apt-get install apt-transport-https --yes
+    - echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+    - apt-get update -y && apt-get install -y openssh-client git helm
+
     - helm package mlflow
+
     - |-
       curl \
         --request POST \
         --user gitlab-ci-token:$CI_JOB_TOKEN \
         --form "chart=@mlflow-${CI_COMMIT_TAG}.tgz" \
         "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/helm/api/stable/charts"
+
+    - eval $(ssh-agent -s)
+    - chmod 600 $GITHUB_DEPLOY_PRIVATE_KEY
+    - ssh-add $GITHUB_DEPLOY_PRIVATE_KEY
+    - mkdir -p ~/.ssh
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    - git clone --depth 1 git@github.com:mondata-dev/helm-charts.git
+    - cd helm-charts/
+    - cp ../mlflow-${CI_COMMIT_TAG}.tgz" mlflow/
+    - helm repo index .
+    - git add .
+    - git commit -m "added mlflow release ${CI_COMMIT_TAG}"
+    - git push
   only:
     - tags
