@@ -26,7 +26,7 @@ build:
     - ssh-add $GITHUB_DEPLOY_PRIVATE_KEY
     - mkdir -p ~/.ssh
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-    - git clone --depth 1 git@github.com:mondata-dev/helm-charts.git
+    - git clone --depth 1 --branch gh-pages git@github.com:mondata-dev/helm-charts.git
     - cd helm-charts/
     - cp "../mlflow-${CI_COMMIT_TAG}.tgz" mlflow/
     - helm repo index .
