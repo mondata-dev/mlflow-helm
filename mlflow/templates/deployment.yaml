@@ -55,7 +55,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - >-
-              mlflow server --host=0.0.0.0
+              mlflow server --host=0.0.0.0 --port=5000
           volumeMounts:
             {{- if .Values.artifacts.credentials.google }}
             - name: artifact-credentials-volume
